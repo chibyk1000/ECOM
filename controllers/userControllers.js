@@ -121,7 +121,7 @@ const getUser = async(req, res) => {
   try {
     console.log(req.cookies)
     const email = jwt.verify(req.cookies.token, process.env.USER_TOKEN_PASS)
-    const user = await UserModel.findOne({ email }).select(['-password','-role', '-emailVerified'])
+    const user = await UserModel.findOne({ email }).select(['-password'])
     
     res.status(200).json(user)
 
