@@ -1,9 +1,9 @@
 const express = require("express");
-
+const upload = require("../utils/multer-uploads");
+const { addProducts, getAllProducts } = require("../controllers/productsController");
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  return res.json({ message: "welcome" });
-});
+router.post('/add-products', upload.single('file'), addProducts)
+router.get('/get-products', getAllProducts)
 
 module.exports = router;

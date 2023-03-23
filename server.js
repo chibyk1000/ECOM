@@ -22,7 +22,7 @@ app.use(cookie())
 app.use(express.json())
 app.use('/user', userRoute)
 app.use('/admin', adminRoute)
-
+app.use('/uploads', express.static('static'))
 app.all('**', (req, res) => {
     return res.status(404).json({message: 'page not found'})
 })
