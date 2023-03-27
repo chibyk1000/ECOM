@@ -67,7 +67,16 @@ const getAllProducts = async (req, res) => {
 
 const getSingleProduct = async (req, res) => {
     try {
-        
+       
+        const { title } = req.params
+        if (!title) {
+            return res.status(400).json({message:"invalid request"})
+        }
+        const product = await ProductSchema.findOne({ title })
+        if (!product) {
+             return res.status(404).json({ message: "product not found" });
+        }
+        return res.status(200).json(product)
     } catch (error) {
         
     }
@@ -75,7 +84,29 @@ const getSingleProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
     try {
-        
+     const { title:product_title } = req.params;
+     if (!product_title) {
+       return res.status(400).json({ message: "invalid request" });
+     }
+       
+        const {title, description, price} = req.body
+       if (!title || !description || !price) {
+         return res.status(400).json({ message: "missing fields" });
+       }
+       const product = await ProductSchema.findOne({ product_title });
+       if (!product) {
+         return res.status(404).json({ message: "product not found" });
+        } 
+
+          const { filename, size, mimetype } = req.file;
+        product.title = title
+        product.price = price
+        product.description = description
+        product.image = filename
+        product.save()
+        return res.status(200).json({message: 'product updated'})
+
+
     } catch (error) {
         
     }
@@ -83,7 +114,15 @@ const editProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
-        
+         const { title } = req.params;
+         if (!title) {
+           return res.status(400).json({ message: "invalid request" });
+         }
+         const product = await ProductSchema.deleteOne({ title });
+         if (!product) {
+           return res.status(404).json({ message: "product not found" });
+        }
+        return res.status(200).json({ message: 'product deleted' })
     } catch (error) {
         
     }
