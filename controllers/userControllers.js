@@ -120,7 +120,7 @@ const login = async (req, res) => {
 const getUser = async(req, res) => {
   try {
    
-    const email = jwt.verify(req.cookies.token, process.env.USER_TOKEN_PASS)
+   const email = req.email
     const user = await UserModel.findOne({ email }).select(['-password'])
     
     res.status(200).json(user)

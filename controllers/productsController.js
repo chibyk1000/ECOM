@@ -6,8 +6,8 @@ const multer =require('multer')
 const addProducts = async (req, res) => {
     try {
 
-        console.log(req.body)
-        const email = jwt.verify(req.cookies.token, process.env.USER_TOKEN_PASS);
+        
+       const email = req.email
         if (!email) {
             return res.status(400).json({message:'invalid token'})
         }
@@ -84,6 +84,17 @@ const getSingleProduct = async (req, res) => {
 
 const editProduct = async (req, res) => {
     try {
+        const email = req.email;
+        if (!email) {
+          return res.status(400).json({ message: "invalid token" });
+        }
+
+        const user = await UserModel.findOne({ email }).select(["-password"]);
+
+        if (!user) {
+          return res.status(400).json({ message: "you are not logged in" });
+        }
+
      const { title:product_title } = req.params;
      if (!product_title) {
        return res.status(400).json({ message: "invalid request" });
@@ -114,6 +125,17 @@ const editProduct = async (req, res) => {
 
 const deleteProduct = async (req, res) => {
     try {
+        const email = req.email;
+        if (!email) {
+          return res.status(400).json({ message: "invalid token" });
+        }
+
+        const user = await UserModel.findOne({ email }).select(["-password"]);
+
+        if (!user) {
+          return res.status(400).json({ message: "you are not logged in" });
+        }
+
          const { title } = req.params;
          if (!title) {
            return res.status(400).json({ message: "invalid request" });
