@@ -126,8 +126,37 @@ const getUser = async(req, res) => {
     res.status(200).json(user)
 
   } catch (err) {
-    // console.log(err)
+    console.log(err)
   }
 }
 
-module.exports = {signup, login, verifyEmail, getUser}
+
+
+const updateUser = async(req, res) => {
+  try {
+       const email = req.email;
+    const user = await UserModel.findOne({ email }).select(["-password"]);
+    
+    if (!user) {
+      return res.status(400).json({ message: "user does not exist" });
+    }
+
+    const { firstname, lastname, email:mail } = req.body
+    
+    if (!firstname || !lastname || !mail) {
+      return res.status(400).json({message:"missing upadate fields"})
+    }
+
+
+    user.email = mail
+    user.lastname = lastname
+    user.firstname = firstname
+    user.save()
+    return res.status(200).json({message:"user updated"})
+
+    
+  } catch (err) {
+    console.log(err);
+  }
+}
+module.exports = {signup, login, verifyEmail, getUser, updateUser}

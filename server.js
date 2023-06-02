@@ -31,6 +31,4 @@ app.all('**', (req, res) => {
     return res.status(404).json({message: 'page not found'})
 })
 
-
-
 app.listen(PORT, ()=> console.log('server is listening on port ' + PORT))

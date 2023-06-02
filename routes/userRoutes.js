@@ -6,7 +6,8 @@ const authorize = require('../middlewares/AuthMiddleware')
 router.post('/create-account', userController.signup )
 router.post('/verify-email', userController.verifyEmail )
 router.post('/login', userController.login)
-router.get('/profile',authorize, userController.getUser)
+router.get('/profile', authorize, userController.getUser)
+router.put('/update', authorize, userController.updateUser)
 
 
 

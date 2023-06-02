@@ -7,35 +7,36 @@ const addProducts = async (req, res) => {
     try {
 
         
-       const email = req.email
+      const email = req.email
+  ;
         if (!email) {
             return res.status(400).json({message:'invalid token'})
         }
 
         const user = await UserModel.findOne({ email }).select(["-password"]);
-        
+     
          if (!user) {
            return res.status(400).json({ message: "you are not logged in" });
          }
 
         
         const { title, price, description } = req.body
-        const { filename, size, mimetype } = req.file
-        
-        if (!title || !price || !description) {
-            return res.status(400).json({message: "some fields are missing"})
-        }
-
-        const product = new ProductSchema({
-            user:user._id,
-            title,
-            price,
-            description,
-            image: `http://localhost:8080/uploads/${filename}`
-        })
-
-        product.save()
-        return res.status(201)
+      const { filename, size, mimetype } = req.file
+      if (!title || !price || !description) {
+        return res.status(400).json({message: "some fields are missing"})
+      }
+      
+      const product = new ProductSchema({
+        user:user._id,
+        title,
+        price,
+        description,
+        image: `http://localhost:8080/uploads/${filename}`
+      })
+      
+      product.save()
+      
+        return res.status(200).json({message:"product uploaded"})
 //  upload(req, res, function (err) {
 //    if (err instanceof multer.MulterError) {
 // } else if (err) {

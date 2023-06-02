@@ -10,7 +10,7 @@ const {
 } = require("../controllers/productsController");
 const router = express.Router();
 
-router.post("/add-products", upload.single("file"), authorize, addProducts);
+router.post("/add-products", authorize, addProducts);
 router.get("/get-products",  getAllProducts);
 
 router.get('/single/:title', getSingleProduct)

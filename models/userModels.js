@@ -27,6 +27,10 @@ const userSchema = new Schema({
     type: String,
     default: "user",
   },
+  image_url: {
+    type: String,
+    default: "http://localhost:8000/uploads/default.jpg"
+  },
   products:[ {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Products"
