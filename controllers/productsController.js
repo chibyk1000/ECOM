@@ -37,15 +37,7 @@ const addProducts = async (req, res) => {
       product.save()
       
         return res.status(200).json({message:"product uploaded"})
-//  upload(req, res, function (err) {
-//    if (err instanceof multer.MulterError) {
-// } else if (err) {
-//        console.log(err.name)
-//      // An unknown error occurred when uploading.
-//    }
 
-//    // Everything went fine.
-//  });
 
 
      
@@ -69,7 +61,8 @@ const getAllProducts = async (req, res) => {
 const getSingleProduct = async (req, res) => {
     try {
        
-        const { title } = req.params
+      const { title } = req.params
+
         if (!title) {
             return res.status(400).json({message:"invalid request"})
         }
@@ -79,7 +72,7 @@ const getSingleProduct = async (req, res) => {
         }
         return res.status(200).json(product)
     } catch (error) {
-        
+        console.log(error);
     }
 }
 
@@ -150,5 +143,5 @@ const deleteProduct = async (req, res) => {
         
     }
 }
-
+  
 module.exports = {addProducts, getAllProducts, editProduct, deleteProduct, getSingleProduct}
