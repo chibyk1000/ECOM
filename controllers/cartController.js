@@ -66,14 +66,16 @@ const addToCart = async (req, res) => {
 
 const incrementCartItem = async (req, res) => {
   try {
-    const { title, price, image, user_id, _id: productId } = req.body;
+    const { title, price, image, user_id,  productId } = req.body;
     const user = await UserModel.findOne({ email: req.email });
 
-    if (!user) {
+    if (!user) { 
       return res.status(400).json({ message: "please log in" });
     }
     const cart = await CartModel.findOne({ userId: user._id });
+    
     if (!cart) {
+  
       const newItem = [{ title, price, image, productId, quantity: 1 }];
       const newCartItem = new CartModel({
         userId: user._id,
@@ -83,10 +85,11 @@ const incrementCartItem = async (req, res) => {
       newCartItem.save();
       return res.status(200).json({ message: "Cart created " });
     }
-
+// console.log(req.body, cart);
     const existingitem = cart.item.find(
       (item) => item.productId.toString() === productId
     );
+
     if (!existingitem) {
       const newItem = [
         ...cart.item,
@@ -111,7 +114,7 @@ const incrementCartItem = async (req, res) => {
     const index = cart.item.findIndex(
       (item) => item.productId.toString() === existingitem.productId.toString()
     );
-    //   cart.item = [...cart.item, updatedItem]
+      // cart.item = [...car  t.item, updatedItem]
 
     cart.item[index] = existingitem;
     const subtotal = cart.item.reduce(
