@@ -194,9 +194,37 @@ const getCart = async (req, res) => {
  res.status(200).json(cart)
   } catch (error) {}
 };
-const deleteCart = () => {
+const deleteCartItem = async(req, res) => {
   try {
-  } catch (error) {}
+
+     const user = await UserModel.findOne({ email: req.email });
+
+     if (!user) {
+       return res.status(400).json({ message: "please log in" });
+     }
+
+    const cart = await CartModel.findOne({ userId: user._id.toString() });
+    
+    if (!cart) {
+      return res.status(404).json({ message: "you do not have an item in the cart !" })
+      
+    }
+
+    const { productId } = req.body
+    
+    if (!productId) {
+      return res.status(400).json({message:"missing field"})
+    }
+
+    const index = cart.item.findIndex((p) => p.productId.toString() === productId)
+    const item = cart.item[index]
+    cart.total -= item.price
+    cart.item.splice(index, 1)
+    cart.save()
+    return res.status(200).json({message:"item removed from cart"})
+  } catch (error) {
+    console.log(error);
+  }
 };
 
-module.exports = { addToCart, decrementItem, getCart, deleteCart, incrementCartItem };
+module.exports = { addToCart, decrementItem, getCart, deleteCartItem, incrementCartItem };
